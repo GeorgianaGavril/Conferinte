@@ -2,9 +2,9 @@ const { User } = require('../models');
 const { checkUserExists, validateUserFields } = require('../utils/validation');
 
 const createUser = async (req, res) => {
-    const { name, email, password, role } = req.body;
+    const { name, email, password, confirmPassword, role } = req.body;
 
-    const validation = validateUserFields({ name, email, password, role });
+    const validation = validateUserFields({ name, email, password, confirmPassword, role });
     if (!validation.valid) {
         return res.status(400).json({ message: validation.message });
     }
