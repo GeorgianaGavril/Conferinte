@@ -1,9 +1,14 @@
 import { useState } from "react";
+import axios from "axios";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 export default function App() {
   return (
     <div>
       <Login />
+      <ToastContainer /> 
     </div>
   );
 }
@@ -59,22 +64,39 @@ function SignUp({ toggle }) {
     return Object.keys(errObj).length;
   };
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
 
     if (!validateForm()) {
-      const user = { name, firstName, role, email, password, confirmPassword };
-      console.log(user);
+      try {
+        const response = await axios.post("http://localhost:3001/sign-up", {
+            name, 
+            firstName, 
+            email, 
+            password, 
+            confirmPassword, 
+            role
+        });
+        console.log("User created successfully:", response.data);
+        setMessage("Te-ai înscris cu succes!");
+        setTimeout(() => setMessage(""), 3000);
+  
+        setName("");
+        setFirstName("");
+        setRole("Organizator");
+        setEmail("");
+        setPassword("");
+        setConfirmPassword("");
+    } catch (error) {
+        if (error.response) {
+          toast.error("Eroare în crearea contului: " + error.response.data.message);
+      } else if (error.request) {
+          toast.error("Nu s-a primit răspuns de la server. Te rugăm să încerci din nou.");
+      } else {
+          toast.error("A apărut o eroare necunoscută. Te rugăm să încerci din nou mai târziu.");
+      }
+    }
 
-      setMessage("Te-ai înscris cu succes!");
-      setTimeout(() => setMessage(""), 3000);
-
-      setName("");
-      setFirstName("");
-      setRole("Organizator");
-      setEmail("");
-      setPassword("");
-      setConfirmPassword("");
     } else {
       console.log("Nu ai completat datele!");
       console.log(validateForm());
@@ -179,20 +201,63 @@ function SignUp({ toggle }) {
 function SignIn({ toggle }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [message, setMessage] = useState("");
 
   const [errors, setErrors] = useState({});
 
-  function handleSubmit(e) {
+  const validateForm = () => {
+    const errObj = {};
+    if (!email.trim() || !email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+      errObj.email = "Email invalid!";
+    }
+
+    if (password.trim().length < 5) {
+      errObj.password = "Parola trebuie sa aiba minim 5 caractere!";
+    }
+
+    setErrors(errObj);
+    return Object.keys(errObj).length;
+  };
+
+  async function handleSubmit(e) {
     e.preventDefault();
 
-    setEmail("");
-    setPassword("");
+    if(!validateForm()){
 
-    setErrors({});
+      try{
+        const response = await axios.post("http://localhost:3001/login",{
+          email,
+          password
+        });
+        console.log(response.data);
+  
+        console.log("User created successfully:", response.data);
+        setMessage("Te-ai autentificat cu succes!");
+        setTimeout(() => setMessage(""), 3000);
+  
+        setEmail("");
+        setPassword("");
+  
+      }catch(error){
+        if(error.response){
+          toast.error("Autentificare esuata! " + error.response.data.message );
+        }else if (error.request) {
+          toast.error("Nu s-a primit răspuns de la server. Te rugăm să încerci din nou.");
+        } else {
+            toast.error("A apărut o eroare necunoscută. Te rugăm să încerci din nou mai târziu.");
+        }
+      }
+    }
   }
 
   return (
     <>
+      {message ? (
+      <div className="message">
+        {message}
+        <br></br>
+      </div>
+    ) : undefined}
       <div className="signup">
         <h2>Bine ai revenit!</h2>
         <br></br>
@@ -221,7 +286,7 @@ function SignIn({ toggle }) {
             />
             {errors.password && <small>{errors.password}</small>}
           </div>
-          <button type="submit">Înscrie-te</button>
+          <button type="submit">Autentifică-te</button>
           <span onClick={toggle} className="account">
             Nu ai cont? Înscrie-te aici!
           </span>

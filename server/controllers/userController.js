@@ -2,23 +2,26 @@ const { User } = require('../models');
 const { checkUserExists, validateUserFields } = require('../utils/validation');
 
 const createUser = async (req, res) => {
-    const { lastname, firstname, email, password, confirmPassword, role } = req.body;
+    const { name, firstName, email, password, confirmPassword, role } = req.body;
 
-    const validation = validateUserFields({lastname, firstname, email, password, confirmPassword, role });
+    const validation = validateUserFields({name, firstName, email, password, confirmPassword, role });
+    console.log(validation);  
     if (!validation.valid) {
+        console.log(validation.message )
         return res.status(400).json({ message: validation.message });
     }
 
     try {
         const userExists = await checkUserExists(email);
-        if (userExists) {
-            return res.status(400).json({ message: "A user with this email already exists" });
+        console.log(userExists)
+        if (userExists !== null) {
+            return res.status(400).json({ message: "Exista deja un utilizator cu acest email" });
         }
 
-        const newUser = await User.create({firstname, lastname, email, password, role });
-        return res.status(201).json({ message: 'User created successfully', newUser });
+        const newUser = await User.create({firstname: firstName,lastname: name, email, password, role });
+        return res.status(201).json({ message: 'Utilizator creat cu succes', newUser });
     } catch (e) {
-        return res.status(500).json({ message: 'Error in creating user', error: e.message });
+        return res.status(500).json({ message: 'Eroare la crearea utilizatorului', error: e.message });
     }
 };
 

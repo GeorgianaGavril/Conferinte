@@ -5,17 +5,17 @@ const checkUserExists = async (email) => {
     return await User.findOne({ where: { email } });
 };
 
-const validateUserFields = ({ lastname,firstname, email, password, confirmPassword, role }) => {
-    if (!lastname || !firstname || !email || !password || !confirmPassword || !role) {
-        return { valid: false, message: 'All fields are mandatory' };
+const validateUserFields = ({ name,firstName, email, password, confirmPassword, role }) => {
+    if (!name || !firstName || !email || !password || !confirmPassword || !role) {
+        return { valid: false, message: 'Toate campurile sunt obligatorii' };
     }
 
     if(!checkPasswords({ password, confirmPassword })){
-        return { valid: false, message: 'Password do not match' };
+        return { valid: false, message: 'Parolele nu sunt identice' };
     }
 
     if(!validateEmail(email)){
-        return { valid: false, message: 'Invalid email' };
+        return { valid: false, message: 'Emali-ul este invalid' };
     }
 
     return { valid: true };
