@@ -17,14 +17,14 @@ body {
 form {
   display: flex;
   flex-direction: column;
-  align-items: stretch; /* Se asigură că toate elementele se aliniază pe lățimea containerului */
-  gap: 20px; /* Spațiu mai mare între grupuri */
+  align-items: stretch;
+  gap: 20px;
 }
 
 .form-group {
   display: flex;
-  flex-direction: column; /* Eticheta și câmpul sunt în coloană */
-  gap: 5px; /* Spațiu mic între etichetă și câmp */
+  flex-direction: column;
+  gap: 5px;
 }
 
 input,
@@ -64,7 +64,7 @@ button:hover {
   background-color: #0056b3;
 }
 
-.login {
+.signup {
   background-color: #bdd7f3;
   display: flex;
   flex-direction: column;
@@ -76,6 +76,34 @@ button:hover {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-h5 {
+.account {
   text-align: center;
+  cursor: pointer;
+  color: #0056b3;
+}
+
+.message {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #207e36;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  font-size: 1rem;
+  animation: fade 3s forwards;
+}
+
+@keyframes fade {
+  0% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }
