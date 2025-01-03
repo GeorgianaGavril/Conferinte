@@ -77,6 +77,7 @@ function SignUp({ toggle }) {
             confirmPassword, 
             role
         });
+        localStorage.setItem("token", response.data.token);
         console.log("User created successfully:", response.data);
         setMessage("Te-ai înscris cu succes!");
         setTimeout(() => setMessage(""), 3000);
