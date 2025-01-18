@@ -16,7 +16,11 @@ app.use(express.json());
 const userRouter = require("./routes/users");
 const authRouter = require("./routes/auth");
 const reviewRouter = require("./routes/review");
+const articleRouter = require("./routes/article");
+//const conferenceRouter = require("./routes/conference");
 app.use("/users", userRouter);
+app.use("/article", articleRouter);
+//app.use("/conference", conferenceRouter);
 app.use("/", authRouter);
 app.use("/reviews", reviewRouter);
 
