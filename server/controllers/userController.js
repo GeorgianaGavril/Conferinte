@@ -7,7 +7,6 @@ const createUser = async (req, res) => {
     const validation = validateUserFields({name, firstName, email, password, confirmPassword, role });
     console.log(validation);  
     if (!validation.valid) {
-        console.log(validation.message )
         return res.status(400).json({ message: validation.message });
     }
 
@@ -31,7 +30,7 @@ const getUserById = async (req, res) => {
     try {
         const user = await User.findByPk(id);
         if (!user) {
-            return res.status(404).json({ message: 'Cannot find user' });
+            return res.status(404).json({ message: 'Utilizatorul nu a fost gasit' });
         }
         return res.json(user);
     } catch (e) {
@@ -46,13 +45,13 @@ const updateUser = async (req, res) => {
     try {
         const user = await User.findByPk(id);
         if (!user) {
-            return res.status(404).json({ message: 'User not found' });
+            return res.status(404).json({ message: 'Utilizatorul nu a fost gasit' });
         }
 
         await user.update(toUpdate);
-        return res.status(200).json({ message: 'User updated successfully', user });
+        return res.status(200).json({ message: 'Utilizator actualizat cu succes', user });
     } catch (e) {
-        return res.status(500).json({ message: 'Error in updating user', error: e.message });
+        return res.status(500).json({ message: 'Eroare la actualizarea utilizatorului', error: e.message });
     }
 };
 
