@@ -1,0 +1,31 @@
+.sidebar {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 250px;
+  background-color: #274472;
+  color: #dbdcf2;
+  padding: 20px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.logout-btn {
+  position: absolute;
+  bottom: 70px;
+  background-color: #c3e0e5;
+  color: #274472;
+}
+
+.logout-btn:hover {
+  background-color: #41729f;
+  color: #c3e0e5;
+}
+
+.menu {
+  font-size: large;
+  position: absolute;
+  top: 70px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "../css/pages/reviewer.css"; // Stilurile CSS externe
+import Sidebar from "../Components/Sidebar";
 
-const ReviewerDashboard = () => {
+function ReviewerDashboard() {
   const [selectedArticle, setSelectedArticle] = useState(null);
 
   useEffect(() => {
@@ -23,7 +24,7 @@ const ReviewerDashboard = () => {
       id: 2,
       title: "Articol 2",
       author: "Autor 2",
-      status: "In proces de revizuire",
+      status: "În proces de revizuire",
     },
     {
       id: 3,
@@ -31,25 +32,34 @@ const ReviewerDashboard = () => {
       author: "Autor 3",
       status: "Revizuit",
     },
+    {
+      id: 4,
+      title: "Articol 4",
+      author: "Autor 4",
+      status: "În proces de revizuire",
+    },
+    {
+      id: 5,
+      title: "Articol 5",
+      author: "Autor 5",
+      status: "Revizuit",
+    },
+    {
+      id: 6,
+      title: "Articol 6",
+      author: "Autor 6",
+      status: "În proces de revizuire",
+    },
   ];
 
   return (
     <div className="dashboard-container review-page">
-      <div className="sidebar">
-        <h2>Reviewer Menu</h2>
-        <ul>
-          <li>Assigned Articles</li>
-          <li>Profile</li>
-          <li>
-            <button className="logout-button">Logout</button>
-          </li>
-        </ul>
-      </div>
+      <Sidebar role="reviewer" />
 
       <div className="main-content">
-        <h1>Assigned Articles</h1>
+        <h1>Articole asignate</h1>
         {!selectedArticle ? (
-          <div>
+          <div className="article-list">
             {articles.map((article) => (
               <div
                 key={article.id}
@@ -71,7 +81,7 @@ const ReviewerDashboard = () => {
               Back to Articles
             </button>
             <h2>{selectedArticle.title}</h2>
-            <p>{selectedArticle.description}</p>
+            <p>{selectedArticle.description || "No description available"}</p>
             <textarea
               placeholder="Write your review here..."
               className="review-textarea"
@@ -82,6 +92,6 @@ const ReviewerDashboard = () => {
       </div>
     </div>
   );
-};
+}
 
 export default ReviewerDashboard;

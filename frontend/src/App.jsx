@@ -5,13 +5,27 @@ import "react-toastify/dist/ReactToastify.css";
 import Login from "./Pages/Login";
 import { ToastContainer } from "react-toastify";
 import ReviewerDashboard from "./Pages/Reviewer";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 export default function App() {
   return (
     <div>
-      {/* <Login /> */}
-      {/* <ToastContainer /> */}
-      <ReviewerDashboard />
+      <Router>
+        <div>
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <>
+                  <Login />
+                  <ToastContainer />
+                </>
+              }
+            />
+            <Route path="/reviewer" element={<ReviewerDashboard />} />
+          </Routes>
+        </div>
+      </Router>
     </div>
   );
 }

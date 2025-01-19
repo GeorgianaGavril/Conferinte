@@ -3,6 +3,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import "../css/pages/login.css";
 import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
 
 function SignIn({ toggle }) {
   const [email, setEmail] = useState("");
@@ -10,6 +11,8 @@ function SignIn({ toggle }) {
   const [message, setMessage] = useState("");
 
   const [errors, setErrors] = useState({});
+
+  const navigate = useNavigate();
 
   const validateForm = () => {
     const errObj = {};
@@ -28,35 +31,41 @@ function SignIn({ toggle }) {
   async function handleSubmit(e) {
     e.preventDefault();
 
-    if (!validateForm()) {
-      try {
-        const response = await axios.post("http://localhost:3001/login", {
-          email,
-          password,
-        });
-        console.log(response.data);
+    // if (!validateForm()) {
+    try {
+      const response = await axios.post("http://localhost:3001/login", {
+        email,
+        password,
+      });
+      console.log(response.data);
 
-        console.log("User created successfully:", response.data);
-        setMessage("Te-ai autentificat cu succes!");
-        setTimeout(() => setMessage(""), 3000);
+      console.log("User created successfully:", response.data);
+      setMessage("Te-ai autentificat cu succes!");
+      setTimeout(() => setMessage(""), 3000);
 
-        setEmail("");
-        setPassword("");
-      } catch (error) {
-        if (error.response) {
-          toast.error("Autentificare esuata! " + error.response.data.message);
-        } else if (error.request) {
-          toast.error(
-            "Nu s-a primit răspuns de la server. Te rugăm să încerci din nou."
-          );
-        } else {
-          toast.error(
-            "A apărut o eroare necunoscută. Te rugăm să încerci din nou mai târziu."
-          );
-        }
+      setEmail("");
+      setPassword("");
+    } catch (error) {
+      if (error.response) {
+        toast.error("Autentificare esuata! " + error.response.data.message);
+      } else if (error.request) {
+        toast.error(
+          "Nu s-a primit răspuns de la server. Te rugăm să încerci din nou."
+        );
+      } else {
+        toast.error(
+          "A apărut o eroare necunoscută. Te rugăm să încerci din nou mai târziu."
+        );
       }
     }
+    // }
   }
+
+  const handleAutentificare = () => {
+    if (validateForm) {
+      navigate("/reviewer");
+    }
+  };
 
   return (
     <div>
@@ -94,7 +103,9 @@ function SignIn({ toggle }) {
             />
             {errors.password && <small>{errors.password}</small>}
           </div>
-          <button type="submit">Autentifică-te</button>
+          <button type="submit" onClick={handleAutentificare}>
+            Autentifică-te
+          </button>
           <span onClick={toggle} className="account">
             Nu ai cont? Înscrie-te aici!
           </span>
