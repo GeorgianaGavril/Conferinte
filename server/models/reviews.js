@@ -1,20 +1,23 @@
 "use strict";
 const { Model } = require("sequelize");
+
 module.exports = (sequelize, DataTypes) => {
   class Review extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
-      // define association here
+      // Legătura cu utilizatorul (reviewer)
       this.belongsTo(models.User, {
         foreignKey: "idReviewer",
         as: "reviewer",
       });
+
+      // Legătura cu articolul
+      this.belongsTo(models.Article, {
+        foreignKey: "idArticle",
+        as: "article",
+      });
     }
   }
+
   Review.init(
     {
       idReview: {
@@ -26,10 +29,22 @@ module.exports = (sequelize, DataTypes) => {
       idArticle: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        references: {
+          model: "Article",
+          key: "idArticle",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
       },
       idReviewer: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        references: {
+          model: "User",
+          key: "idUser",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
       },
       content: {
         type: DataTypes.TEXT,
@@ -39,20 +54,14 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: true,
       },
-      createdAt: {
-        type: DataTypes.DATE,
-        allowNull: false,
-      },
-      updatedAt: {
-        type: DataTypes.DATE,
-        allowNull: false,
-      },
     },
     {
       sequelize,
       modelName: "Review",
       tableName: "reviews",
+      timestamps: false,
     }
   );
+
   return Review;
 };

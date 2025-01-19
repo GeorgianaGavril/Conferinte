@@ -1,21 +1,25 @@
 const { Review } = require("../models");
 
 const createReview = async (req, res) => {
-  const { content, rating } = req.body;
+  const { idArticle, idReviewer, content, rating } = req.body;
 
   try {
     if (!content || typeof content !== "string") {
       return res
         .status(400)
-        .json({ message: "Content is required and must be a string." });
+        .json({
+          message: "Continutul trebuie sa fie string si sa nu fie null.",
+        });
     }
     if (!rating || typeof rating !== "number" || rating < 1 || rating > 5) {
       return res
         .status(400)
-        .json({ message: "Rating must be a number between 1 and 5." });
+        .json({ message: "Ratingul poate fi intre 1 si 5." });
     }
 
     const newReview = await Review.create({
+      idArticle,
+      idReviewer,
       content,
       rating,
     });

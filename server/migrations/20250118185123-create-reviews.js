@@ -12,10 +12,22 @@ module.exports = {
       idArticle: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        references: {
+          model: "articles",
+          key: "idArticle",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
       },
       idReviewer: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        references: {
+          model: "users",
+          key: "idUser",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
       },
       content: {
         type: Sequelize.TEXT,
@@ -24,14 +36,6 @@ module.exports = {
       rating: {
         type: Sequelize.INTEGER,
         allowNull: true,
-      },
-      createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE,
-      },
-      updatedAt: {
-        allowNull: false,
-        type: Sequelize.DATE,
       },
     });
   },
