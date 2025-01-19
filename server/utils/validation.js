@@ -56,16 +56,59 @@ const validateUpdateArticle = ({ title, content, status }) => {
 };
 
 
-
 const validateEmail = (email) => validator.isEmail(email);
 
 const checkPasswords = ({password, confirmPassword}) => {
     return password === confirmPassword;
 };
 
+const validateConference = ({name, description, date, location, idOrganizer}) => {
+
+    if(!name || typeof name !== 'string' || !description || typeof description !== 'string' || !location || typeof location !== 'string'){
+        return {valid: false, message: "Numele, descrierea si locatia sunt obligatorii si trebuie sa fie de tip string"};
+    }
+
+    const parsedDate = new Date(date);
+    if(isNaN(parsedDate.getTime())){
+        return {valid: false, message: "Data conferintei nu este valida"};
+    }
+
+
+    if (!idOrganizer || typeof idOrganizer !== 'number' || idOrganizer <= 0) {
+        return {valid: false, message: 'Id-ul organizatorului trebuie sa fie un numar intreg pozitiv'};
+    }
+
+    return {valid: true};
+}
+
+const validateUpdateConference = ({name, description,  date, location}) => {
+    if (name && typeof name !== 'string') {
+        return { valid: false, message: "Numele trebuie să fie un string." };
+    }
+
+    if (description && typeof description !== 'string') {
+        return { valid: false, message: "Descrierea trebuie să fie un string." };
+    }
+
+    if(date && typeof date === 'string'){
+        const parsedDate = new Date(date);
+        if(isNaN(parsedDate.getTime())){
+            return {valid: false, message: "Data conferintei nu este valida"};
+        }
+    }
+
+    if (location && typeof location !== 'string') {
+        return { valid: false, message: "Locatia trebuie să fie un string." };
+    }
+
+    return { valid: true };
+};
+
 module.exports = {
     checkUserExists,
     validateUserFields,
     validateArticle,
-    validateUpdateArticle
+    validateUpdateArticle,
+    validateConference,
+    validateUpdateConference
 };

@@ -1,4 +1,5 @@
 'use strict';
+const moment = require('moment')
 const {
   Model
 } = require('sequelize');
@@ -34,7 +35,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     date:{ 
       type: DataTypes.DATE,
-      allowNull: false,
+      allowNull:false,
     },
     location: {
       type:DataTypes.STRING,
@@ -48,6 +49,7 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'Conference',
     tableName: 'conferences',
+    timestamps: false
   });
   return Conferences;
 };

@@ -5,14 +5,14 @@ const createUser = async (req, res) => {
     const { name, firstName, email, password, confirmPassword, role } = req.body;
 
     const validation = validateUserFields({name, firstName, email, password, confirmPassword, role });
-    console.log(validation);  
+    console.log(validation.valid);  
     if (!validation.valid) {
         return res.status(400).json({ message: validation.message });
     }
 
     try {
         const userExists = await checkUserExists(email);
-        console.log(userExists)
+        console.log("exista user " + userExists)
         if (userExists !== null) {
             return res.status(400).json({ message: "Exista deja un utilizator cu acest email" });
         }
@@ -20,7 +20,8 @@ const createUser = async (req, res) => {
         const newUser = await User.create({firstname: firstName,lastname: name, email, password, role });
         return res.status(201).json({ message: 'Utilizator creat cu succes', newUser });
     } catch (e) {
-        return res.status(500).json({ message: 'Eroare la crearea utilizatorului', error: e.message });
+        console.log(e.message)
+        return res.status(500).json({  error: e.message });
     }
 };
 
