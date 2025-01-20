@@ -1,22 +1,16 @@
 const { Review } = require("../models");
+const { validateReview } = require("../utils/validation");
+const { validateUpdateReview } = require("../utils/validation");
 
 const createReview = async (req, res) => {
   const { idArticle, idReviewer, content, rating } = req.body;
 
-  try {
-    if (!content || typeof content !== "string") {
-      return res
-        .status(400)
-        .json({
-          message: "Continutul trebuie sa fie string si sa nu fie null.",
-        });
-    }
-    if (!rating || typeof rating !== "number" || rating < 1 || rating > 5) {
-      return res
-        .status(400)
-        .json({ message: "Ratingul poate fi intre 1 si 5." });
-    }
+  const validation = validateReview({ idArticle, idReviewer, content, rating });
+  if (!validation.valid) {
+    return res.status(400).json({ message: validation.message });
+  }
 
+  try {
     const newReview = await Review.create({
       idArticle,
       idReviewer,
@@ -68,20 +62,10 @@ const updateReview = async (req, res) => {
     if (!review) {
       return res.status(404).json({ message: "Review not found" });
     }
-    if (!toUpdate.content || typeof toUpdate.content !== "string") {
-      return res
-        .status(400)
-        .json({ message: "Content is required and must be a string." });
-    }
-    if (
-      !toUpdate.rating ||
-      typeof toUpdate.rating !== "number" ||
-      toUpdate.rating < 1 ||
-      toUpdate.rating > 5
-    ) {
-      return res
-        .status(400)
-        .json({ message: "Rating must be a number between 1 and 5." });
+
+    const validation = validateUpdateReview(toUpdate);
+    if (!validation.valid) {
+      return res.status(400).json({ message: validation.message });
     }
 
     await review.update(toUpdate);
