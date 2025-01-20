@@ -178,6 +178,7 @@ function ReviewerDashboard() {
                 ></textarea>
                 <h4>Rating:</h4>
                 <input
+                  className="input-rating"
                   type="number"
                   value={rating || ""}
                   onChange={(e) => setRating(e.target.value)}

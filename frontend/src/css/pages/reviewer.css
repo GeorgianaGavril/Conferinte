@@ -92,8 +92,14 @@ h1 {
   border-radius: 5px;
   cursor: pointer;
   margin-top: 10px;
+  font-size: medium;
 }
 
 .upload-button:hover {
   background-color: #152640;
+}
+
+.input-rating {
+  border-radius: 4px;
+  padding: 5px;
 }

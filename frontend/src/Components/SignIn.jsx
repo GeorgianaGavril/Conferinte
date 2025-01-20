@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import "../css/pages/login.css";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
@@ -8,30 +8,12 @@ import { useNavigate } from "react-router-dom";
 function SignIn({ toggle }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [message, setMessage] = useState("");
-
-  const [errors, setErrors] = useState({});
 
   const navigate = useNavigate();
-
-  const validateForm = () => {
-    const errObj = {};
-    if (!email.trim() || !email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
-      errObj.email = "Email invalid!";
-    }
-
-    if (password.trim().length < 5) {
-      errObj.password = "Parola trebuie sa aiba minim 5 caractere!";
-    }
-
-    setErrors(errObj);
-    return Object.keys(errObj).length;
-  };
 
   async function handleSubmit(e) {
     e.preventDefault();
 
-    // if (!validateForm()) {
     try {
       const response = await axios.post("http://localhost:3001/login", {
         email,
@@ -39,12 +21,11 @@ function SignIn({ toggle }) {
       });
       console.log(response.data);
 
-      console.log("User created successfully:", response.data);
-      setMessage("Te-ai autentificat cu succes!");
-      setTimeout(() => setMessage(""), 3000);
+      console.log("Autentificare reusita!", response.data);
 
       setEmail("");
       setPassword("");
+      navigate("/reviewer");
     } catch (error) {
       if (error.response) {
         toast.error("Autentificare esuata! " + error.response.data.message);
@@ -58,59 +39,47 @@ function SignIn({ toggle }) {
         );
       }
     }
-    // }
   }
-
-  const handleAutentificare = () => {
-    if (validateForm) {
-      navigate("/reviewer");
-    }
-  };
 
   return (
     <div>
-      {message ? (
-        <div className="message">
-          {message}
-          <br></br>
-        </div>
-      ) : undefined}
       <div className="signup">
-        <h2>Bine ai revenit!</h2>
-        <br></br>
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <input
-              className={`${errors.email ? "errors" : ""}`}
-              type="email"
-              id="email"
-              name="email"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            {errors.email && <small>{errors.email}</small>}
-          </div>
-          <div className="form-group">
-            <input
-              className={`${errors.password ? "errors" : ""}`}
-              type="password"
-              id="password"
-              name="password"
-              placeholder="Parolă"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            {errors.password && <small>{errors.password}</small>}
-          </div>
-          <button type="submit" onClick={handleAutentificare}>
-            Autentifică-te
+        <div className="left">
+          <h2>Bine ai revenit!</h2>
+          <br></br>
+          <h5>Nu ai cont?</h5>
+          <button className="account" onClick={toggle}>
+            Înscrie-te aici!
           </button>
-          <span onClick={toggle} className="account">
-            Nu ai cont? Înscrie-te aici!
-          </span>
-        </form>
+        </div>
+        <div className="right">
+          <h3>Autentifică-te</h3>
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+            <div className="form-group">
+              <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Parolă"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
+            <button type="submit">Autentifică-te</button>
+          </form>
+        </div>
       </div>
+      <ToastContainer />
     </div>
   );
 }
