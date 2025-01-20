@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "../css/pages/reviewer.css";
 import Sidebar from "../Components/Sidebar";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
 
 function ReviewerDashboard() {
   const [selectedArticle, setSelectedArticle] = useState(null);
@@ -11,35 +12,35 @@ function ReviewerDashboard() {
   const [review, setReview] = useState("");
   const [rating, setRating] = useState("");
 
+  const fetchData = async () => {
+    try {
+      const articlesRes = await fetch("http://localhost:3001/article/");
+      const articlesData = await articlesRes.json();
+
+      const authorIds = [
+        ...new Set(articlesData.map((article) => article.idAuthor)),
+      ];
+      const authorsData = await Promise.all(
+        authorIds.map(async (id) => {
+          const res = await fetch(`http://localhost:3001/users/${id}`);
+          return res.json();
+        })
+      );
+
+      const authorsMap = {};
+      authorsData.forEach((author) => {
+        authorsMap[author.idUser] = `${author.lastname} ${author.firstname}`;
+      });
+
+      setArticles(articlesData);
+      setAuthors(authorsMap);
+    } catch (e) {
+      console.error("Eroare la încărcarea datelor: ", e);
+    }
+  };
+
   useEffect(() => {
     document.body.classList.add("review-page");
-
-    const fetchData = async () => {
-      try {
-        const articlesRes = await fetch("http://localhost:3001/article/");
-        const articlesData = await articlesRes.json();
-
-        const authorIds = [
-          ...new Set(articlesData.map((article) => article.idAuthor)),
-        ];
-        const authorsData = await Promise.all(
-          authorIds.map(async (id) => {
-            const res = await fetch(`http://localhost:3001/users/${id}`);
-            return res.json();
-          })
-        );
-
-        const authorsMap = {};
-        authorsData.forEach((author) => {
-          authorsMap[author.idUser] = `${author.lastname} ${author.firstname}`;
-        });
-
-        setArticles(articlesData);
-        setAuthors(authorsMap);
-      } catch (e) {
-        console.error("Eroare la încărcarea datelor: ", e);
-      }
-    };
 
     fetchData();
 
@@ -73,11 +74,15 @@ function ReviewerDashboard() {
   async function handleUpload(e) {
     e.preventDefault();
     if (!review || !rating) {
-      console.error("Review și rating trebuie completate!");
+      console.error(
+        "Trebuie să încărcați un review și să selectați un rating!"
+      );
+      toast.error("Trebuie să încărcați un review și să selectați un rating!");
       return;
     }
     if (Number(rating) < 1 || Number(rating) > 5) {
       console.error("Rating-ul poate fi intre 1 si 5!");
+      toast.error("Rating-ul poate fi intre 1 si 5!");
       return;
     }
     try {
@@ -88,10 +93,34 @@ function ReviewerDashboard() {
         rating: Number(rating),
       });
       console.log("Recenzie adaugata cu succes: ", uploadReview.data);
+      toast.success("Feedback adăugat cu succes!");
       setReview("");
       setRating(null);
     } catch (e) {
       console.error("Eroare la adaugarea recenziei: ", e.message);
+      toast.error("Nu s-a putut adauga feedback-ul!");
+    }
+  }
+
+  async function handleAccept(e) {
+    e.preventDefault();
+    try {
+      const acceptReview = await axios.patch(
+        `http://localhost:3001/article/${selectedArticle.idArticle}`,
+        {
+          status: "acceptat",
+        }
+      );
+      setSelectedArticle((prev) => ({
+        ...prev,
+        status: "acceptat",
+      }));
+      console.log("Articol aprobat cu succes: ", acceptReview.data);
+      toast.success("Articolul a fost aprobat!");
+      fetchData();
+    } catch (e) {
+      console.error("Eroare la aprobarea articolului: ", e.message);
+      toast.error("Nu s-a putut aproba articolul!");
     }
   }
 
@@ -100,25 +129,29 @@ function ReviewerDashboard() {
       <Sidebar role="reviewer" />
 
       <div className="main-content">
-        <h1>Articole asignate</h1>
         {!selectedArticle ? (
-          <div className="article-list">
-            {articles.map((article) => (
-              <div
-                key={article.idArticle}
-                className="article-card"
-                onClick={() => setSelectedArticle(article)}
-              >
-                <h3>{article.title}</h3>
-                <p>Autor: {authors[article.idAuthor] || "Autor necunoscut"}</p>
-                <h5>Status: {article.status}</h5>
-              </div>
-            ))}
-          </div>
+          <>
+            <h1>Articole asignate</h1>
+            <div className="article-list">
+              {articles.map((article) => (
+                <div
+                  key={article.idArticle}
+                  className="article-card"
+                  onClick={() => setSelectedArticle(article)}
+                >
+                  <h3>{article.title}</h3>
+                  <p>
+                    Autor: {authors[article.idAuthor] || "Autor necunoscut"}
+                  </p>
+                  <h5>Status: {article.status}</h5>
+                </div>
+              ))}
+            </div>
+          </>
         ) : (
           <div>
             <button
-              className="back-button"
+              className="upload-button"
               onClick={() => {
                 setSelectedArticle(null);
                 setContent(null);
@@ -129,22 +162,33 @@ function ReviewerDashboard() {
             <h1>{selectedArticle.title}</h1>
             <h3>{authors[selectedArticle.idAuthor]}</h3>
             <p>{content}</p>
-            <textarea
-              placeholder="Write your review here..."
-              className="review-textarea"
-              value={review}
-              onChange={(e) => setReview(e.target.value)}
-            ></textarea>
-            <h4>Rating:</h4>
-            <input
-              type="number"
-              value={rating || ""}
-              onChange={(e) => setRating(e.target.value)}
-            ></input>
-            <br></br>
-            <button className="upload-button" onClick={handleUpload}>
-              Upload Review
-            </button>
+            {selectedArticle.status !== "acceptat" ? (
+              <>
+                <button
+                  className="upload-button"
+                  onClick={(e) => handleAccept(e)}
+                >
+                  Aprobă articolul
+                </button>
+                <textarea
+                  placeholder="Scrieți aici feedback-ul..."
+                  className="review-textarea"
+                  value={review}
+                  onChange={(e) => setReview(e.target.value)}
+                ></textarea>
+                <h4>Rating:</h4>
+                <input
+                  type="number"
+                  value={rating || ""}
+                  onChange={(e) => setRating(e.target.value)}
+                ></input>
+                <br></br>
+                <button className="upload-button" onClick={handleUpload}>
+                  Încărcați feedback
+                </button>
+              </>
+            ) : undefined}
+            <ToastContainer />
           </div>
         )}
       </div>
