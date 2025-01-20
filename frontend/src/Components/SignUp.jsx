@@ -7,7 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 function SignUp({ toggle }) {
   const [name, setName] = useState("");
   const [firstName, setFirstName] = useState("");
-  const [role, setRole] = useState("Organzitor");
+  const [role, setRole] = useState("Organizator");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");

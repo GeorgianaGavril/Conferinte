@@ -1,12 +1,11 @@
 const express = require("express")
 const router = express.Router()
-const { createUser, getUserById, updateUser, deleteUser } = require('../controllers/userController');
-
-router.get("/new", (req, res) =>{
-
-})
+const { createUser, getUserById, getAllUsers, updateUser, deleteUser } = require('../controllers/userController');
 
 router.get("/:id", getUserById)
+
+// poate fi utilizat si pentru a selecta utilizatori cu un anumit rol
+router.get("", getAllUsers)
 
 router.post('/', createUser)
 

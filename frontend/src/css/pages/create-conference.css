@@ -14,9 +14,6 @@ body.page {
   overflow: hidden;
 }
 
-
-
-
 h1 {
   margin-bottom: 40px;
   color: #274472;
@@ -105,4 +102,19 @@ select[multiple] {
 
 .main-content {
   margin-left: 20px; 
+}
+
+.errors {
+  border-color: #dc3545;
+  background-color: #f8d7da;
+}
+
+small {
+  color: #dc3545;
+}
+
+
+p{
+  margin-top: 75px;
+  font-weight: bold;
 }

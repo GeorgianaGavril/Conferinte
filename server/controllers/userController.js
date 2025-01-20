@@ -39,6 +39,28 @@ const getUserById = async (req, res) => {
     }
 };
 
+const getAllUsers = async(req, res) =>{
+    const { role } = req.query;
+    let users;
+    if(role){
+        try {
+            users = await User.findAll({
+                where: { role },
+              });
+            res.status(200).json(users);
+          } catch (error) {
+            res.status(500).json({ message: "Server error" });
+          }
+    } else {
+        try {
+            users = await User.findAll();
+            res.status(200).json(users);
+          } catch (error) {
+            res.status(500).json({ message: "Server error" });
+          }
+    }
+}
+
 const updateUser = async (req, res) => {
     const id = req.params.id;
     const toUpdate = req.body;
@@ -73,4 +95,4 @@ const deleteUser = async (req, res) => {
     }
 };
 
-module.exports = { createUser, getUserById, updateUser, deleteUser };
+module.exports = { createUser, getUserById, getAllUsers, updateUser, deleteUser };

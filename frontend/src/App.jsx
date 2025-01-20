@@ -7,9 +7,11 @@ import { ToastContainer } from "react-toastify";
 import ReviewerDashboard from "./Pages/Reviewer";
 import CreateConference from "./Pages/CreateConference";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { UserProvider } from './UserContext'; 
 
 export default function App() {
   return (
+    <UserProvider>  
     <div>
       <Router>
         <div>
@@ -29,5 +31,6 @@ export default function App() {
         </div>
       </Router>
     </div>
+    </UserProvider>
   );
 }

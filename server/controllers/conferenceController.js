@@ -1,10 +1,10 @@
 const {validateConference, validateUpdateConference} = require("../utils/validation")
-const {Conference, User} = require("../models")
+const {Conference, User, ConferenceReviewer} = require("../models")
 
 const createConference = async (req, res) => {
     try {
-        const {name, description, date, location, idOrganizer} = req.body;
-     
+        const {name, description, date, location, idOrganizer, reviewers} = req.body;
+
         const validation = validateConference({name, date, description,  location, idOrganizer});
   
         if (!validation.valid) {
@@ -15,13 +15,27 @@ const createConference = async (req, res) => {
         if (!organizer) {
             return res.status(404).json({ message: 'Organizatorul nu a fost gasit' });
         }
-
-        const utcDate = new Date(date + "UTC");
+       
+        const utcDate = new Date(date);
         const isoDate = utcDate.toISOString(); 
+
         const newConference = await Conference.create({name,description,date:isoDate, location, idOrganizer});
+
+
+        if (reviewers && reviewers.length > 0) {
+            const conferenceReviewers = reviewers.map((reviewerId) => ({
+                idConference: newConference.idConference,
+                idReviewer: reviewerId,
+            }));
+
+            await ConferenceReviewer.bulkCreate(conferenceReviewers);
+        }
+
         return res.status(201).json({ message: 'Conferinta creata cu succes', newConference });
             
     } catch (e) {
+        
+        console.error('Error during addUsers:', e); 
         return res.status(500).json({ message: 'Eroare la crearea conferintei', error: e.message });
     }
 };

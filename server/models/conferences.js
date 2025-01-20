@@ -15,7 +15,16 @@ module.exports = (sequelize, DataTypes) => {
       this.belongsTo(models.User,{
         foreignKey: 'idOrganizer',
         as: 'organizer',
-      })
+      });
+
+      this.belongsToMany(models.User, {
+        through: 'ConferenceReviewer', 
+        foreignKey: 'idConference',
+        otherKey: 'idUser',
+        as: 'reviewers'
+      });
+
+
     }
   }
   Conferences.init({

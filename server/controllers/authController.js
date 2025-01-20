@@ -10,7 +10,7 @@ const loginUser = async (req, res) => {
         if (!user) {
             return res.status(404).json({ message: 'Utilizatorul nu a fost gasit' });
         }
-        console.log(user)
+        console.log("userul este " +user)
         const isMatch = await bcrypt.compare(password, user.password);
         console.log(isMatch)
         if (!isMatch) {
@@ -18,13 +18,13 @@ const loginUser = async (req, res) => {
         }
 
         const token = jwt.sign(
-            { userId: user.id, role: user.role },
+            { userId: user.idUser, role: user.role, username: user.firstname },
             process.env.JWT_SECRET_KEY,  
-            { expiresIn: '1h' } 
+            { expiresIn: '3h' } 
         );
-
         return res.status(200).json({ message: 'Autentificare reusita', token });
     } catch (e) {
+  
         return res.status(500).json({ message: e.message });
     }
 };

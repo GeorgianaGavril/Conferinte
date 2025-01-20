@@ -20,6 +20,15 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "idReviewer",
         as: "reviews",
       });
+
+      this.belongsToMany(models.Conference, {
+        through: 'ConferenceReviewer',
+        foreignKey: 'idUser',
+        otherKey: 'idConference',
+        as: 'conferences'
+      });
+
+
     }
   }
   User.init(

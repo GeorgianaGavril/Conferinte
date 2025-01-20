@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import "../css/pages/login.css";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 
 function SignIn({ toggle }) {
   const [email, setEmail] = useState("");
@@ -40,9 +41,20 @@ function SignIn({ toggle }) {
   
       localStorage.setItem('token', response.data.token);
      // console.log("User created successfully:", response.data);
+
+     const decoded = jwtDecode(response.data.token);
+     const userRole = decoded.role; 
+console.log(userRole);
+     if (userRole === "Reviewer") {
+       navigate("/reviewer");
+     } else if (userRole === "Organizator") {
+       navigate("/create/conference");
+     } else if(userRole === "Autor"){
+
+     }
+
       setMessage("Te-ai autentificat cu succes!");
       setTimeout(() => setMessage(""), 3000);
-      navigate("/reviewer");
   
       setEmail("");
       setPassword("");
