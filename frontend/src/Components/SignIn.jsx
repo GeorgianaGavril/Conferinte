@@ -31,18 +31,19 @@ function SignIn({ toggle }) {
   async function handleSubmit(e) {
     e.preventDefault();
 
-    // if (!validateForm()) {
+    if (!validateForm()) {
     try {
       const response = await axios.post("http://localhost:3001/login", {
         email,
         password,
       });
-      console.log(response.data);
-
-      console.log("User created successfully:", response.data);
+  
+      localStorage.setItem('token', response.data.token);
+     // console.log("User created successfully:", response.data);
       setMessage("Te-ai autentificat cu succes!");
       setTimeout(() => setMessage(""), 3000);
-
+      navigate("/reviewer");
+  
       setEmail("");
       setPassword("");
     } catch (error) {
@@ -58,7 +59,7 @@ function SignIn({ toggle }) {
         );
       }
     }
-    // }
+     }
   }
 
   const handleAutentificare = () => {
@@ -103,7 +104,7 @@ function SignIn({ toggle }) {
             />
             {errors.password && <small>{errors.password}</small>}
           </div>
-          <button type="submit" onClick={handleAutentificare}>
+          <button type="submit" /*onClick={handleAutentificare}*/ >
             Autentifică-te
           </button>
           <span onClick={toggle} className="account">

@@ -29,3 +29,12 @@
   align-items: center;
   flex-direction: column;
 }
+
+.welcome-text{
+  text-align: center;
+  color: rgb(219, 220, 240);
+}
+
+.menu-btn{
+  margin: 5px;
+}

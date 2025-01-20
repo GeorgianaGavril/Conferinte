@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import "../css/components/sidebar.css";
 import { useNavigate } from "react-router-dom";
 // import { getUserById } from "../../../server/controllers/userController";
+import { jwtDecode } from 'jwt-decode';
 
 function Sidebar({ role }) {
   const [username, setUserName] = useState("");
@@ -16,6 +17,20 @@ function Sidebar({ role }) {
   //       })
   //       .catch((err) => console.error(err));
   //   }, []);
+
+  useEffect(() => {
+      const token = localStorage.getItem('token');
+      
+      if (token) {
+        try {
+          const decoded = jwtDecode(token); // Folosește jwtDecode în loc de jwt_decode
+          console.log(decoded);
+          setUserName(decoded.username);  // Asigură-te că 'username' este în payload-ul token-ului
+        } catch (error) {
+          console.error("Token invalid sau expirat", error);
+        }
+      }
+  }, []);
 
   const getMenuItems = () => {
     switch (role) {
@@ -45,13 +60,14 @@ function Sidebar({ role }) {
   };
 
   const handleLogout = () => {
+    localStorage.removeItem("token");
     navigate("/");
   };
 
   return (
     <div className="sidebar">
       <div className="menu">
-        <h2>Bine ai revenit, {username}!</h2>
+        <h2 className="welcome-text">Bine ai revenit, {username}!</h2>
         {getMenuItems()}
       </div>
       <button className="logout-btn" onClick={handleLogout}>

@@ -5,6 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Login from "./Pages/Login";
 import { ToastContainer } from "react-toastify";
 import ReviewerDashboard from "./Pages/Reviewer";
+import CreateConference from "./Pages/CreateConference";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 export default function App() {
@@ -23,6 +24,7 @@ export default function App() {
               }
             />
             <Route path="/reviewer" element={<ReviewerDashboard />} />
+            <Route path="/create/conference" element={<CreateConference />} />
           </Routes>
         </div>
       </Router>
