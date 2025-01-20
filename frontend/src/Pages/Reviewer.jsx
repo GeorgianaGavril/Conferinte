@@ -1,56 +1,99 @@
 import React, { useState, useEffect } from "react";
-import "../css/pages/reviewer.css"; // Stilurile CSS externe
+import "../css/pages/reviewer.css";
 import Sidebar from "../Components/Sidebar";
+import axios from "axios";
 
 function ReviewerDashboard() {
   const [selectedArticle, setSelectedArticle] = useState(null);
+  const [articles, setArticles] = useState([]);
+  const [authors, setAuthors] = useState([]);
+  const [content, setContent] = useState(null);
+  const [review, setReview] = useState("");
+  const [rating, setRating] = useState("");
 
   useEffect(() => {
     document.body.classList.add("review-page");
+
+    const fetchData = async () => {
+      try {
+        const articlesRes = await fetch("http://localhost:3001/article/");
+        const articlesData = await articlesRes.json();
+
+        const authorIds = [
+          ...new Set(articlesData.map((article) => article.idAuthor)),
+        ];
+        const authorsData = await Promise.all(
+          authorIds.map(async (id) => {
+            const res = await fetch(`http://localhost:3001/users/${id}`);
+            return res.json();
+          })
+        );
+
+        const authorsMap = {};
+        authorsData.forEach((author) => {
+          authorsMap[author.idUser] = `${author.lastname} ${author.firstname}`;
+        });
+
+        setArticles(articlesData);
+        setAuthors(authorsMap);
+      } catch (e) {
+        console.error("Eroare la încărcarea datelor: ", e);
+      }
+    };
+
+    fetchData();
 
     return () => {
       document.body.classList.remove("review-page");
     };
   }, []);
 
-  const articles = [
-    {
-      id: 1,
-      title: "Articol 1",
-      author: "Autor 1",
-      status: "Revizuit",
-    },
-    {
-      id: 2,
-      title: "Articol 2",
-      author: "Autor 2",
-      status: "În proces de revizuire",
-    },
-    {
-      id: 3,
-      title: "Articol 3",
-      author: "Autor 3",
-      status: "Revizuit",
-    },
-    {
-      id: 4,
-      title: "Articol 4",
-      author: "Autor 4",
-      status: "În proces de revizuire",
-    },
-    {
-      id: 5,
-      title: "Articol 5",
-      author: "Autor 5",
-      status: "Revizuit",
-    },
-    {
-      id: 6,
-      title: "Articol 6",
-      author: "Autor 6",
-      status: "În proces de revizuire",
-    },
-  ];
+  useEffect(() => {
+    if (selectedArticle) {
+      const fetchContent = async () => {
+        try {
+          const res = await fetch(
+            `http://localhost:3001/article/${selectedArticle.idArticle}`
+          );
+          const data = await res.json();
+
+          setContent(data.content);
+        } catch (e) {
+          console.error(
+            "Eroare la incarcarea continutului articolului: ",
+            e.message
+          );
+        }
+      };
+
+      fetchContent();
+    }
+  }, [selectedArticle]);
+
+  async function handleUpload(e) {
+    e.preventDefault();
+    if (!review || !rating) {
+      console.error("Review și rating trebuie completate!");
+      return;
+    }
+    if (Number(rating) < 1 || Number(rating) > 5) {
+      console.error("Rating-ul poate fi intre 1 si 5!");
+      return;
+    }
+    try {
+      const uploadReview = await axios.post("http://localhost:3001/reviews/", {
+        idArticle: selectedArticle.idArticle,
+        idReviewer: 1,
+        content: review,
+        rating: Number(rating),
+      });
+      console.log("Recenzie adaugata cu succes: ", uploadReview.data);
+      setReview("");
+      setRating(null);
+    } catch (e) {
+      console.error("Eroare la adaugarea recenziei: ", e.message);
+    }
+  }
 
   return (
     <div className="dashboard-container review-page">
@@ -62,13 +105,13 @@ function ReviewerDashboard() {
           <div className="article-list">
             {articles.map((article) => (
               <div
-                key={article.id}
+                key={article.idArticle}
                 className="article-card"
                 onClick={() => setSelectedArticle(article)}
               >
                 <h3>{article.title}</h3>
-                <p>{article.author}</p>
-                <h5>{article.status}</h5>
+                <p>Autor: {authors[article.idAuthor] || "Autor necunoscut"}</p>
+                <h5>Status: {article.status}</h5>
               </div>
             ))}
           </div>
@@ -76,17 +119,32 @@ function ReviewerDashboard() {
           <div>
             <button
               className="back-button"
-              onClick={() => setSelectedArticle(null)}
+              onClick={() => {
+                setSelectedArticle(null);
+                setContent(null);
+              }}
             >
               Back to Articles
             </button>
-            <h2>{selectedArticle.title}</h2>
-            <p>{selectedArticle.description || "No description available"}</p>
+            <h1>{selectedArticle.title}</h1>
+            <h3>{authors[selectedArticle.idAuthor]}</h3>
+            <p>{content}</p>
             <textarea
               placeholder="Write your review here..."
               className="review-textarea"
+              value={review}
+              onChange={(e) => setReview(e.target.value)}
             ></textarea>
-            <button className="upload-button">Upload Review</button>
+            <h4>Rating:</h4>
+            <input
+              type="number"
+              value={rating || ""}
+              onChange={(e) => setRating(e.target.value)}
+            ></input>
+            <br></br>
+            <button className="upload-button" onClick={handleUpload}>
+              Upload Review
+            </button>
           </div>
         )}
       </div>

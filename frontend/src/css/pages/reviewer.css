@@ -76,7 +76,8 @@ h1 {
 
 .back-button {
   padding: 10px 20px;
-  background-color: #ccc;
+  background-color: #274472;
+  color: #dbdcf2;
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -84,7 +85,7 @@ h1 {
 }
 
 .back-button:hover {
-  background-color: #bbb;
+  background-color: #152640;
 }
 
 .review-textarea {
@@ -99,8 +100,8 @@ h1 {
 
 .upload-button {
   padding: 10px 20px;
-  background-color: green;
-  color: white;
+  background-color: #274472;
+  color: #dbdcf2;
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -108,5 +109,5 @@ h1 {
 }
 
 .upload-button:hover {
-  background-color: #006600;
+  background-color: #152640;
 }
