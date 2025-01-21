@@ -2,6 +2,10 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const { User } = require('../models');
 
+// Acesta functie se ocupă cu procesul de autentificare a utilizatorilor.
+// Verifică dacă utilizatorul există în baza de date și dacă parola introdusă este corectă.
+// Dacă autentificarea este reușită, aceasta generează un token JWT și îl returnează.
+// Dacă există erori, acestea sunt gestionate și sunt returnate mesaje de eroare.
 const loginUser = async (req, res) => {
     const { email, password } = req.body;
 

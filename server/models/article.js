@@ -16,6 +16,13 @@ module.exports = (sequelize, DataTypes) => {
         as: "author",
       });
 
+
+      this.belongsTo(models.Conference, {
+        foreignKey: "idConference",
+        as: "conferenceArticle",
+    });
+    
+
       this.hasMany(models.Review, {
         foreignKey: "idArticle",
         as: "reviews",
@@ -39,7 +46,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       status: {
-        type: Sequelize.ENUM(
+        type: DataTypes.ENUM(
           StatusEnum.PENDING,
           StatusEnum.NEEDS_REVISION,
           StatusEnum.REJECTED,
@@ -51,12 +58,19 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-          model: "User",
+          model: "users",
           key: "idUser",
         },
         onUpdate: "CASCADE",
         onDelete: "CASCADE",
       },
+      idConference:{
+        type: DataTypes.INTEGER,
+        references: {
+          model: "conferences",
+          key: "idConference",
+        }
+      }
     },
     {
       sequelize,

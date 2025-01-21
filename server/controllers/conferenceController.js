@@ -105,10 +105,30 @@ const deleteConference = async (req, res) => {
     }
 };
 
+const getArticleForConference = async (req, res) => {
+    try {
+        const id = req.params.id;  
+
+        const articles = await Articles.findAll({
+            where: { idConference: id } 
+        });
+
+        if (articles.length === 0) {
+            return res.status(404).json({ message: "Nu au fost găsite articole pentru această conferință." });
+        }
+
+        return res.status(200).json(articles);
+    } catch (e) {
+        return res.status(500).json({ message: e.message });
+    }
+};
+
+
 module.exports = {
     createConference, 
     getConferenceById, 
     getAllConferences, 
-    updateConference, 
-    deleteConference 
+    updateConference,
+    deleteConference,
+    getArticleForConference,
 }

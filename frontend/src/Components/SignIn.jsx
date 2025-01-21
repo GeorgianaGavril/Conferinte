@@ -30,7 +30,7 @@ function SignIn({ toggle }) {
      if (userRole === "Reviewer") {
       navigate("/reviewer");
      } else if (userRole === "Organizator") {
-       navigate("/create/conference");
+       navigate("/conferences");
      } else if(userRole === "Autor"){
 
      }

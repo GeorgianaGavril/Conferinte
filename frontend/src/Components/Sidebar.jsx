@@ -43,8 +43,16 @@ function Sidebar({ role }) {
       case "organizer":
         return (
           <>
-            <button className="menu-btn">Add Conference</button>
-            <button className="menu-btn">Monitor Articles</button>
+            <button
+                className="menu-btn"
+                onClick={() => navigate("/create/conference")} >
+                Adauga Conferinta
+            </button>
+            <button
+                className="menu-btn"
+                onClick={() => navigate("/conferences")} >
+                Monitorizeaza conferinte
+            </button>
           </>
         );
       case "author":

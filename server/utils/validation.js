@@ -2,10 +2,13 @@ const { User } = require("../models");
 const validator = require("validator");
 const StatusEnum = require("./statusEnum");
 
+// cauta in bd un user cu un anumit email
+// functia este folosita pentru a vedea daca mai exista un user cu acelasi email
 const checkUserExists = async (email) => {
   return await User.findOne({ where: { email } });
 };
 
+// verificam daca datele primite indeplinesc conditiile si sunt prezente in cerere
 const validateUserFields = ({
   name,
   firstName,
@@ -132,12 +135,17 @@ const validateUpdateReview = ({ content, rating }) => {
   return { valid: true };
 };
 
+// verificam daca variabila email are structura necesara a unui email
 const validateEmail = (email) => validator.isEmail(email);
 
+// verificam daca parola si parola de confirmare sunt la fel
 const checkPasswords = ({ password, confirmPassword }) => {
   return password === confirmPassword;
 };
 
+// validam campurile care au venit in cererea post, este important ca numele, descrierea si locatia
+// sa fie stringuri, date sa fie intr un format corect ca sa poata fi stocata corect in bd iar
+// idOrganizer trebuie sa fie un numar deoarece este o cheie straina
 const validateConference = ({name, description, date, location, idOrganizer}) => {
 
     if(!name || typeof name !== 'string' || !description || typeof description !== 'string' || !location || typeof location !== 'string'){
@@ -157,6 +165,9 @@ const validateConference = ({name, description, date, location, idOrganizer}) =>
     return {valid: true};
 }
 
+
+// acelasi lucru ca la validateConference doar ca aici campurile pot lipsi deoarce se face
+// actualizarea doar campurilor necesare
 const validateUpdateConference = ({name, description,  date, location}) => {
     if (name && typeof name !== 'string') {
         return { valid: false, message: "Numele trebuie să fie un string." };

@@ -1,9 +1,14 @@
 const { User } = require('../models');
 const { checkUserExists, validateUserFields } = require('../utils/validation');
 
+// Functia creaza un user pe baza informatiilor primite in cerere
+// Daca nu sunt trimise informatiile necesare se returneaza codul http 500 si un mesaj de eroare
+// Verificam daca exista un user cu acelasi mail deoarece emailul este unic
+// Verificam daca utilizatorul a introdus parolele corect
 const createUser = async (req, res) => {
     const { name, firstName, email, password, confirmPassword, role } = req.body;
 
+    // validam informatiile pentru a ne asigura ca ce este introdus in baza de date este corect
     const validation = validateUserFields({name, firstName, email, password, confirmPassword, role });
     console.log(validation.valid);  
     if (!validation.valid) {
@@ -25,6 +30,7 @@ const createUser = async (req, res) => {
     }
 };
 
+// Returneaza utilizatorul pe baza id-ului daca acesta exista
 const getUserById = async (req, res) => {
     const id = req.params.id;
 
@@ -39,6 +45,7 @@ const getUserById = async (req, res) => {
     }
 };
 
+// Returneaza toti utilizatorii
 const getAllUsers = async(req, res) =>{
     const { role } = req.query;
     let users;
@@ -61,6 +68,8 @@ const getAllUsers = async(req, res) =>{
     }
 }
 
+// Actualizeaza anumite sau toate campurile utilizatorului in functie de cate informatii sunt 
+// trimise in cerere
 const updateUser = async (req, res) => {
     const id = req.params.id;
     const toUpdate = req.body;
@@ -78,7 +87,7 @@ const updateUser = async (req, res) => {
     }
 };
 
-
+// Stergem utilizatorul pe baza id-ului daca acesta exista
 const deleteUser = async (req, res) => {
     const id = req.params.id;
 

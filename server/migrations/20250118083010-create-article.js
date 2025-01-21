@@ -36,6 +36,13 @@ module.exports = {
         },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
+      },
+      idConference:{
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Conferences",
+          key: "idConference",
+        }
       }
     });
   },

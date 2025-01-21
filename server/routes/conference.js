@@ -5,13 +5,17 @@ const {
     getConferenceById, 
     getAllConferences, 
     updateConference, 
-    deleteConference 
+    deleteConference,
+    getArticleForConference 
 } = require('../controllers/conferenceController');
 
+// Am creat endpoint-uri CRUD (create, read, update, delete) 
 
-router.get("/", getAllConferences);
+router.get("/:id/article", getArticleForConference);
 
 router.get("/:id", getConferenceById)
+
+router.get("/", getAllConferences);
 
 router.post('/', createConference)
 
