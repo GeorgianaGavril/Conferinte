@@ -1,8 +1,6 @@
 const { User } = require("../models");
 const validator = require("validator");
 const StatusEnum = require("./statusEnum");
-const { Sequelize } = require('sequelize');
-
 
 const checkUserExists = async (email) => {
   return await User.findOne({ where: { email } });
@@ -17,14 +15,12 @@ const returnReviewers = async () => {
       const reviewers = await User.findAll({
         attributes: ['idUser'],
         where: {
-          role: 'reviewer',
+          role: 'revi',
         },
         order: Sequelize.literal('RAND()'),
         limit: 2,
         raw: true,
       });
-
-      con
   
       // Extract the idUser values
       const reviewerIds = reviewers.map(user => user.idUser);

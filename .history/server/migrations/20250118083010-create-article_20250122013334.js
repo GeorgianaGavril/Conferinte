@@ -36,7 +36,7 @@ module.exports = {
         },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
-      },
+      }
       idReviewer1: {
         type: Sequelize.INTEGER,
         allowNull: true,

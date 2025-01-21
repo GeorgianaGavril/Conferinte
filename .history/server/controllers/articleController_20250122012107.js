@@ -14,6 +14,7 @@ const createArticle = async (req, res) => {
     const validation = validateArticle({ title, content, idAuthor, idConference });
 
     if (!validation.valid) {
+      console.log("nume repetitiv");
       return res.status(400).json({ message: validation.message });
     }
 
@@ -21,20 +22,19 @@ const createArticle = async (req, res) => {
 
     const author = await User.findByPk(idAuthor);
     if (!author) {
+      console.log("autor repetitic");
       return res.status(404).json({ message: "Autorul nu a fost gasit" });
     }
 
     console.log("autor unic");
 
-    /*
     const articleExists = await checkUniqueTitle(title);
     if (articleExists !== null) {
         return res.status(400).json({ message: "Exista deja un articol cu acest titlu" });
-    }*/
+    }
 
     console.log("titlu unic");
 
-      
     const {user1, user2} = await returnReviewers();
     if (user1 === null || user2 === null) {
         return res.status(400).json({ message: "Nu exista 2 useri cu rol de reviewer" });

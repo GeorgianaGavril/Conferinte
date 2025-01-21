@@ -29,6 +29,7 @@ function ViewArticle() {
   return (
     <div className="view-article-container">
       <h1>{article.title}</h1>
+      <p><strong>Descriere:</strong> {article.description}</p>
       <p><strong>Conținut:</strong></p>
       <div className="article-content">
         <p>{article.content}</p>

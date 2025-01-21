@@ -26,15 +26,13 @@ const createArticle = async (req, res) => {
 
     console.log("autor unic");
 
-    /*
     const articleExists = await checkUniqueTitle(title);
     if (articleExists !== null) {
         return res.status(400).json({ message: "Exista deja un articol cu acest titlu" });
-    }*/
+    }
 
     console.log("titlu unic");
 
-      
     const {user1, user2} = await returnReviewers();
     if (user1 === null || user2 === null) {
         return res.status(400).json({ message: "Nu exista 2 useri cu rol de reviewer" });

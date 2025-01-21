@@ -36,26 +36,6 @@ module.exports = {
         },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
-      },
-      idReviewer1: {
-        type: Sequelize.INTEGER,
-        allowNull: true,
-        references: {
-          model: 'users',
-          key: 'idUser',
-        },
-        onUpdate: 'CASCADE',
-        onDelete: 'SET NULL'
-      },
-      idReviewer2: {
-        type: Sequelize.INTEGER,
-        allowNull: true,
-        references: {
-          model: 'users',
-          key: 'idUser',
-        },
-        onUpdate: 'CASCADE',
-        onDelete: 'SET NULL'
       }
     });
   },
