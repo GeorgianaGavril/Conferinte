@@ -10,7 +10,6 @@ import CreateArticle from "./Pages/CreateArticle";
 import ConferencesDashboard from "./Pages/Conferences";
 import EditArticle from "./Pages/EditArticle";
 import ViewArticle from "./Pages/ViewArticle";
-import ArticleDetails  from "./Components/ArticleDetails";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { UserProvider } from './UserContext'; 
 
