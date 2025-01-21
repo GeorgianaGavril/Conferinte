@@ -88,7 +88,7 @@ const updateArticle = async (req, res) => {
     await article.update(toUpdate);
     return res
       .status(200)
-      .json({ message: "Articol actualizat cu succes", article });
+      .json({ message: "Article actualizat cu succes", article });
   } catch (e) {
     return res.status(500).json({
       message: "Eroare la actualizarea articolului",

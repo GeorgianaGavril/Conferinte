@@ -21,18 +21,7 @@ const createArticle = async (req, res) => {
       return res.status(404).json({ message: "Autorul nu a fost gasit" });
     }
 
-    const articleExists = await checkUniqueTitle(title);
-        if (articleExists !== null) {
-            return res.status(400).json({ message: "Exista deja un articol cu acest titlu" });
-        }
-
-        const {user1, user2} = await returnReviewers();
-        if (user1 === null || user2 === null) {
-            return res.status(400).json({ message: "Nu exista 2 useri cu rol de reviewer" });
-        }
-
-
-    const newArticle = await Article.create({ title, content, idAuthor, user1, user2 });
+    const newArticle = await Article.create({ title, content, idAuthor });
     return res
       .status(201)
       .json({ message: "Articol creat cu succes", newArticle });
@@ -88,7 +77,7 @@ const updateArticle = async (req, res) => {
     await article.update(toUpdate);
     return res
       .status(200)
-      .json({ message: "Articol actualizat cu succes", article });
+      .json({ message: "Article actualizat cu succes", article });
   } catch (e) {
     return res.status(500).json({
       message: "Eroare la actualizarea articolului",

@@ -6,33 +6,6 @@ const checkUserExists = async (email) => {
   return await User.findOne({ where: { email } });
 };
 
-const checkUniqueTitle = async (title) => {
-  return await Article.findOne({ where: {title } });
-};
-
-const returnReviewers = async () => {
-  try {
-      const reviewers = await User.findAll({
-        attributes: ['idUser'],
-        where: {
-          role: 'Author',
-        },
-        order: Sequelize.literal('RAND()'),
-        limit: 2,
-        raw: true,
-      });
-  
-      // Extract the idUser values
-      const reviewerIds = reviewers.map(user => user.idUser);
-  
-      return reviewerIds;
-    } catch (error) {
-      console.error('Error fetching reviewers:', error);
-      throw error; // Propagate the error to be handled by the caller
-    }
-};
-
-
 const validateUserFields = ({
   name,
   firstName,
@@ -212,10 +185,8 @@ module.exports = {
   validateUserFields,
   validateArticle,
   validateUpdateArticle,
-  validateConference,
-  validateUpdateConference,
+    validateConference,
+    validateUpdateConference,
   validateReview,
   validateUpdateReview,
-  checkUniqueTitle,
-  returnReviewers
 };

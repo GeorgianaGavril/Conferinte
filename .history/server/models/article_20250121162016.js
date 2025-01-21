@@ -47,16 +47,6 @@ module.exports = (sequelize, DataTypes) => {
         ),
         defaultValue: statusEnum.PENDING,
       },
-      idReviewer1: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        primaryKey: true
-      },
-      idReviewer2: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        primaryKey: true
-      },
       idAuthor: {
         type: DataTypes.INTEGER,
         allowNull: false,

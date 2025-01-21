@@ -28,10 +28,6 @@ module.exports = (sequelize, DataTypes) => {
         as: 'conferences'
       });
 
-      this.hasMany(models.Article,{
-        foreignKey: 'idAuthor',
-        as: 'articles'
-      });
 
     }
   }

@@ -212,10 +212,8 @@ module.exports = {
   validateUserFields,
   validateArticle,
   validateUpdateArticle,
-  validateConference,
-  validateUpdateConference,
+    validateConference,
+    validateUpdateConference,
   validateReview,
   validateUpdateReview,
-  checkUniqueTitle,
-  returnReviewers
 };

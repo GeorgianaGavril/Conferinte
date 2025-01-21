@@ -213,7 +213,7 @@ module.exports = {
   validateArticle,
   validateUpdateArticle,
   validateConference,
-  validateUpdateConference,
+    validateUpdateConference,
   validateReview,
   validateUpdateReview,
   checkUniqueTitle,
