@@ -1,8 +1,9 @@
 import { useState } from "react";
 import axios from "axios";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import "../css/pages/login.css";
 import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
 
 function SignUp({ toggle }) {
   const [name, setName] = useState("");
@@ -11,9 +12,10 @@ function SignUp({ toggle }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [message, setMessage] = useState("");
 
   const [errors, setErrors] = useState({});
+
+  const navigate = useNavigate();
 
   const validateForm = () => {
     const errObj = {};
@@ -55,9 +57,8 @@ function SignUp({ toggle }) {
           role,
         });
         localStorage.setItem("token", response.data.token);
-        console.log("User created successfully:", response.data);
-        setMessage("Te-ai înscris cu succes!");
-        setTimeout(() => setMessage(""), 3000);
+        console.log("Cont creat cu succes!");
+        toast.success("Cont creat cu succes!");
 
         setName("");
         setFirstName("");
@@ -65,6 +66,8 @@ function SignUp({ toggle }) {
         setEmail("");
         setPassword("");
         setConfirmPassword("");
+
+        navigate("/reviewer");
       } catch (error) {
         if (error.response) {
           toast.error(
@@ -88,95 +91,87 @@ function SignUp({ toggle }) {
 
   return (
     <>
-      {message ? (
-        <div className="message">
-          {message}
-          <br></br>
-        </div>
-      ) : undefined}
-
       <div className="signup">
-        <h2>Bun venit!</h2>
-        <br></br>
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <input
-              className={`${errors.name ? "errors" : ""}`}
-              type="text"
-              id="name"
-              name="name"
-              placeholder="Nume"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-            {errors.name && <small>{errors.name}</small>}
-          </div>
-          <div className="form-group">
-            <input
-              className={`${errors.firstName ? "errors" : ""}`}
-              type="text"
-              id="firstName"
-              name="firstName"
-              placeholder="Prenume"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-            />
-            {errors.firstName && <small>{errors.firstName}</small>}
-          </div>
-          <div className="form-group">
-            <select
-              id="role"
-              name="role"
-              value={role}
-              onChange={(e) => setRole(e.target.value)}
-            >
-              <option>Organizator</option>
-              <option>Autor</option>
-              <option>Reviewer</option>
-            </select>
-          </div>
-          <div className="form-group">
-            <input
-              className={`${errors.email ? "errors" : ""}`}
-              type="email"
-              id="email"
-              name="email"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            {errors.email && <small>{errors.email}</small>}
-          </div>
-          <div className="form-group">
-            <input
-              className={`${errors.password ? "errors" : ""}`}
-              type="password"
-              id="password"
-              name="password"
-              placeholder="Parolă"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            {errors.password && <small>{errors.password}</small>}
-          </div>
-          <div className="form-group">
-            <input
-              className={`${errors.confirmPassword ? "errors" : ""}`}
-              type="password"
-              id="confirmPassword"
-              name="confirmPassword"
-              placeholder="Confirmare parolă"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-            />
-            {errors.confirmPassword && <small>{errors.confirmPassword}</small>}
-          </div>
-          <button type="submit">Înscrie-te</button>
-          <span onClick={toggle} className="account">
-            Ai deja cont? Conecteaza-te!
-          </span>
-        </form>
+        <div className="left">
+          <h2>Bine ai venit!</h2>
+          <br></br>
+          <h5>Ai cont deja?</h5>
+          <button className="account" onClick={toggle}>
+            Autentificare
+          </button>
+        </div>
+        <div className="right">
+          <h3>Creează-ți cont</h3>
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <input
+                className={`${errors.name ? "errors" : ""}`}
+                type="text"
+                id="name"
+                name="name"
+                placeholder="Nume"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+              {errors.name && <small>{errors.name}</small>}
+            </div>
+            <div className="form-group">
+              <input
+                className={`${errors.firstName ? "errors" : ""}`}
+                type="text"
+                id="firstName"
+                name="firstName"
+                placeholder="Prenume"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+              />
+              {errors.firstName && <small>{errors.firstName}</small>}
+            </div>
+            <div className="form-group">
+              <input
+                className={`${errors.email ? "errors" : ""}`}
+                type="email"
+                id="email"
+                name="email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              {errors.email && <small>{errors.email}</small>}
+            </div>
+            <div className="form-group">
+              <input
+                className={`${errors.password ? "errors" : ""}`}
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Parolă"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              {errors.password && <small>{errors.password}</small>}
+            </div>
+            <div className="form-group">
+              <input
+                className={`${errors.confirmPassword ? "errors" : ""}`}
+                type="password"
+                id="confirmPassword"
+                name="confirmPassword"
+                placeholder="Confirmare parolă"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+              />
+              {errors.confirmPassword && (
+                <small>{errors.confirmPassword}</small>
+              )}
+            </div>
+            <button type="submit" className="submitBtn">
+              Trimite
+            </button>
+          </form>
+        </div>
       </div>
+      <ToastContainer />
     </>
   );
 }

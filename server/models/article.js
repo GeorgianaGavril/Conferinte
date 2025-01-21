@@ -1,10 +1,7 @@
-'use strict';
-const statusEnum = require('../utils/statusEnum');
-const StatusEnum = require('../utils/statusEnum');
-const {
-  Model,
-  Sequelize
-} = require('sequelize');
+"use strict";
+const statusEnum = require("../utils/statusEnum");
+const StatusEnum = require("../utils/statusEnum");
+const { Model, Sequelize } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Article extends Model {
     /**
@@ -14,51 +11,59 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      this.belongsTo(models.User,{
-        foreignKey: 'idAuthor',
-        as: 'author'
-      })
+      this.belongsTo(models.User, {
+        foreignKey: "idAuthor",
+        as: "author",
+      });
+
+      this.hasMany(models.Review, {
+        foreignKey: "idArticle",
+        as: "reviews",
+      });
     }
   }
-  Article.init({
-    idArticle:{
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      primaryKey: true,
-      autoIncrement: true, 
-    }, 
-    title: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    content:{ 
-      type: DataTypes.TEXT('long'),
-      allowNull: false
-    },
-    status: {
-      type: Sequelize.ENUM(
-        StatusEnum.PENDING,
-        StatusEnum.NEEDS_REVISION,
-        StatusEnum.REJECTED,
-        StatusEnum.ACCEPTED
-      ),
-      defaultValue: statusEnum.PENDING,
-    },
-    idAuthor:{ 
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references:{
-        model: 'User',
-        key: 'idUser'
+  Article.init(
+    {
+      idArticle: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        primaryKey: true,
+        autoIncrement: true,
       },
-      onUpdate: 'CASCADE', 
-      onDelete: 'CASCADE'
+      title: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      content: {
+        type: DataTypes.TEXT("long"),
+        allowNull: false,
+      },
+      status: {
+        type: Sequelize.ENUM(
+          StatusEnum.PENDING,
+          StatusEnum.NEEDS_REVISION,
+          StatusEnum.REJECTED,
+          StatusEnum.ACCEPTED
+        ),
+        defaultValue: statusEnum.PENDING,
+      },
+      idAuthor: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+          model: "User",
+          key: "idUser",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
+      },
+    },
+    {
+      sequelize,
+      modelName: "Article",
+      tableName: "articles",
+      timestamps: false,
     }
-  }, {
-    sequelize,
-    modelName: 'Article',
-    tableName: 'articles',
-    timestamps: false
-  });
+  );
   return Article;
 };

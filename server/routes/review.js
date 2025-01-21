@@ -11,7 +11,7 @@ const {
 router.post("/", createReview);
 router.get("/", getAllReviews);
 router.get("/:id", getReviewById);
-router.put("/:id", updateReview);
+router.patch("/:id", updateReview);
 router.delete("/:id", deleteReview);
 
 module.exports = router;

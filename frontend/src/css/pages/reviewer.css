@@ -74,19 +74,6 @@ h1 {
   text-align: center;
 }
 
-.back-button {
-  padding: 10px 20px;
-  background-color: #ccc;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-bottom: 15px;
-}
-
-.back-button:hover {
-  background-color: #bbb;
-}
-
 .review-textarea {
   width: 100%;
   height: 150px;
@@ -99,14 +86,20 @@ h1 {
 
 .upload-button {
   padding: 10px 20px;
-  background-color: green;
-  color: white;
+  background-color: #274472;
+  color: #dbdcf2;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   margin-top: 10px;
+  font-size: medium;
 }
 
 .upload-button:hover {
-  background-color: #006600;
+  background-color: #152640;
+}
+
+.input-rating {
+  border-radius: 4px;
+  padding: 5px;
 }
