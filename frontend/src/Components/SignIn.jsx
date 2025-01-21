@@ -26,9 +26,9 @@ function SignIn({ toggle }) {
 
      const decoded = jwtDecode(response.data.token);
      const userRole = decoded.role; 
-console.log(userRole);
+    console.log(userRole);
      if (userRole === "Reviewer") {
-       navigate("/reviewer");
+      navigate("/reviewer");
      } else if (userRole === "Organizator") {
        navigate("/create/conference");
      } else if(userRole === "Autor"){
@@ -38,7 +38,6 @@ console.log(userRole);
   
       setEmail("");
       setPassword("");
-      navigate("/reviewer");
     } catch (error) {
       if (error.response) {
         toast.error("Autentificare esuata! " + error.response.data.message);

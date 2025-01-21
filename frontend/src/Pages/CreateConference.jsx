@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import "../css/pages/create-conference.css"; 
+import 'react-toastify/dist/ReactToastify.css';
 import Sidebar from "../Components/Sidebar";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import { UserContext } from '../UserContext';
 import { useContext } from 'react';
+
 
 function CreateConference() {
   const [name, setName] = useState('');
@@ -29,11 +31,9 @@ function CreateConference() {
       return selectedReviewer ? selectedReviewer.idUser : null;
     }).filter(id => id !== null);
   
-    // Actualizăm starea cu opțiunile și ID-urile selectate
     setSelectedOptions(prevSelectedNames => {
       const isDeselected = prevSelectedNames.includes(selectedNames[0]);
   
-      // Dacă opțiunea este deja selectată, o eliminăm, altfel o adăugăm
       if (isDeselected) {
         return prevSelectedNames.filter(name => name !== selectedNames[0]);
       } else {
@@ -44,7 +44,6 @@ function CreateConference() {
     setSelectedIds(prevSelectedIds => {
       const isDeselected = prevSelectedIds.includes(selectedKeys[0]);
   
-      // Dacă ID-ul este deja selectat, îl eliminăm, altfel îl adăugăm
       if (isDeselected) {
         return prevSelectedIds.filter(id => id !== selectedKeys[0]);
       } else {
@@ -52,9 +51,6 @@ function CreateConference() {
       }
     });
   };
-  
-  
-  
   
   
 
@@ -117,8 +113,9 @@ useEffect(() => {
           reviewers: selectedIds 
         });
        console.log(response.data)
-        setMessage("Conferinta creata cu succes!");
-        setTimeout(() => setMessage(""), 3000);
+      //  setMessage("Conferinta creata cu succes!");
+        toast.success("Conferinta creata cu succes");
+     //   setTimeout(() => setMessage(""), 3000);
         setName('');
         setDescription('');
         setDate('');
@@ -234,7 +231,9 @@ useEffect(() => {
       <button type="submit">Creează Conferința</button>
      </form>
     </div>
+    <ToastContainer />
     </div>
+    
   );
 }
 

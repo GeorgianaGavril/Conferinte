@@ -67,7 +67,6 @@ function SignUp({ toggle }) {
         setPassword("");
         setConfirmPassword("");
 
-        navigate("/reviewer");
       } catch (error) {
         if (error.response) {
           toast.error(
