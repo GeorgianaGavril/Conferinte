@@ -66,7 +66,6 @@ function SignUp({ toggle }) {
         setEmail("");
         setPassword("");
         setConfirmPassword("");
-
       } catch (error) {
         if (error.response) {
           toast.error(
@@ -125,6 +124,18 @@ function SignUp({ toggle }) {
                 onChange={(e) => setFirstName(e.target.value)}
               />
               {errors.firstName && <small>{errors.firstName}</small>}
+            </div>
+            <div className="form-group">
+              <select
+                id="role"
+                name="role"
+                value={role}
+                onChange={(e) => setRole(e.target.value)}
+              >
+                <option>Organizator</option>
+                <option>Autor</option>
+                <option>Reviewer</option>
+              </select>
             </div>
             <div className="form-group">
               <input
