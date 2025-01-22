@@ -8,7 +8,7 @@ export const UserProvider = ({ children }) => {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    if (token) {
+    if (token !== 'undefined' && typeof token === 'string') {
       const decoded = jwtDecode(token);
       setUser({
         userId: decoded.userId,

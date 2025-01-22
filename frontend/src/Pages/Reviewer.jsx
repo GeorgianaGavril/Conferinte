@@ -3,6 +3,8 @@ import "../css/pages/reviewer.css";
 import Sidebar from "../Components/Sidebar";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
+import { useContext } from 'react';
+import { UserContext } from '../UserContext';
 
 function ReviewerDashboard() {
   const [selectedArticle, setSelectedArticle] = useState(null);
@@ -11,12 +13,15 @@ function ReviewerDashboard() {
   const [content, setContent] = useState(null);
   const [review, setReview] = useState("");
   const [rating, setRating] = useState("");
+  const user = useContext(UserContext);
 
   const fetchData = async () => {
     try {
-      const articlesRes = await fetch("http://localhost:3001/article/");
-      const articlesData = await articlesRes.json();
-
+      if(user){
+       console.log(user)
+        const articlesRes = await fetch("http://localhost:3001/article/reviewer/" + user.userId);
+        const articlesData = await articlesRes.json();
+        console.log('articles', articlesRes)
       const authorIds = [
         ...new Set(articlesData.map((article) => article.idAuthor)),
       ];
@@ -34,6 +39,9 @@ function ReviewerDashboard() {
 
       setArticles(articlesData);
       setAuthors(authorsMap);
+      }
+   
+
     } catch (e) {
       console.error("Eroare la încărcarea datelor: ", e);
     }

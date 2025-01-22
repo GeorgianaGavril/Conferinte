@@ -2,7 +2,7 @@ import React from "react";
 
 const ConferencesList = ({ conferences, onSelectConference }) => (
     <div>
-        <h1>Conferințele tale</h1>
+        <h1>Conferințe</h1>
         <div className="conference-list">
             {conferences.length > 0 ? (
                 conferences.map((conference) => (

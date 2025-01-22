@@ -32,7 +32,7 @@ function SignIn({ toggle }) {
      } else if (userRole === "Organizator") {
        navigate("/conferences");
      } else if(userRole === "Autor"){
-
+      navigate("/join-conference");
      }
 
   

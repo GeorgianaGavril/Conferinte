@@ -58,8 +58,14 @@ function Sidebar({ role }) {
       case "author":
         return (
           <>
-            <button className="menu-btn">Submit Article</button>
-            <button className="menu-btn">View Submissions</button>
+            <button className="menu-btn"
+            onClick={() => navigate("/join-conference/")} 
+            >Submit Article
+    
+            </button>
+            <button className="menu-btn"
+            onClick={() => navigate("/articles/")} 
+            >View Submissions</button>
           </>
         );
       default:
