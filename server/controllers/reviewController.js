@@ -53,6 +53,23 @@ const getReviewById = async (req, res) => {
   }
 };
 
+
+const getReviewsByArticleId = async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    const reviews = await Review.findAll({
+      where: {idArticle: id}
+    });
+    if (!reviews) {
+      return res.status(404).json({ message: "Reviews not found" });
+    }
+    return res.status(200).json(reviews);
+  } catch (e) {
+    return res.status(500).json({ message: e.message });
+  }
+};
+
 const updateReview = async (req, res) => {
   const id = req.params.id;
   const toUpdate = req.body;
@@ -76,6 +93,7 @@ const updateReview = async (req, res) => {
       .json({ message: "Could not update review", error: e.message });
   }
 };
+
 
 const deleteReview = async (req, res) => {
   const id = req.params.id;
@@ -101,4 +119,5 @@ module.exports = {
   getReviewById,
   updateReview,
   deleteReview,
+  getReviewsByArticleId
 };

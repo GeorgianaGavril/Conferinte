@@ -22,10 +22,19 @@ module.exports = (sequelize, DataTypes) => {
         as: "conferenceArticle",
     });
     
-
       this.hasMany(models.Review, {
         foreignKey: "idArticle",
         as: "reviews",
+      });
+
+      this.belongsTo(models.User, {
+        foreignKey: "idReviewer1",
+        as: "reviewer1",
+      });
+
+      this.belongsTo(models.User, {
+        foreignKey: "idReviewer2",
+        as: "reviewer2",
       });
     }
   }
@@ -70,6 +79,26 @@ module.exports = (sequelize, DataTypes) => {
           model: "conferences",
           key: "idConference",
         }
+      },
+      idReviewer1: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        references: {
+          model: "User",
+          key: "idUser",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "SET NULL",
+      },
+      idReviewer2: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        references: {
+          model: "User",
+          key: "idUser",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "SET NULL",
       }
     },
     {

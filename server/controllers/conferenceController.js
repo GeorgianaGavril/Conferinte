@@ -54,6 +54,25 @@ const getConferenceById = async (req, res) => {
     }
 };
 
+
+const getConferenceForAuthor = async (req, res) => {
+    const id = req.params.id;
+
+    try {
+        const conferences = await Conference.findAll({ 
+            where 
+        });
+        if (!conferences) {
+            return res.status(404).json({ message: 'Conferintele nu au fost gasite' });
+        }
+        return res.status(200).json(conferences);
+    } catch (e) {
+        return res.status(500).json({ message: e.message });
+    }
+
+    
+};
+
 const getAllConferences = async (req, res) => {
     try {
         const conferences = await Conference.findAll();

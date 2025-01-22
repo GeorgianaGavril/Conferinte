@@ -43,7 +43,7 @@ const validateUserFields = ({
   return { valid: true };
 };
 
-const validateArticle = ({ title, content, idAuthor }) => {
+const validateArticle = ({ title, content, idAuthor, idConference }) => {
   if (
     !title ||
     typeof title !== "string" ||
@@ -64,6 +64,12 @@ const validateArticle = ({ title, content, idAuthor }) => {
     };
   }
 
+  if (!idConference || typeof idConference !== "number" || idConference <= 0) {
+    return {
+      valid: false,
+      message: "Id-ul conferintei trebuie sa fie un numar intreg pozitiv",
+    };
+  }
   return { valid: true };
 };
 

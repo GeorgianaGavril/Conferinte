@@ -6,9 +6,11 @@ const {
   getReviewById,
   updateReview,
   deleteReview,
+  getReviewsByArticleId,
 } = require("../controllers/reviewController");
 
 router.post("/", createReview);
+router.get("/article/:id", getReviewsByArticleId);
 router.get("/", getAllReviews);
 router.get("/:id", getReviewById);
 router.patch("/:id", updateReview);
