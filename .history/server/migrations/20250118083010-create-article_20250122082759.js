@@ -1,21 +1,21 @@
-"use strict";
-const StatusEnum = require("../utils/statusEnum");
+'use strict';
+const StatusEnum = require('../utils/statusEnum');
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("articles", {
+    await queryInterface.createTable('articles', {
       idArticle: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER,
+        type: Sequelize.INTEGER
       },
       title: {
         type: Sequelize.STRING,
         allowNull: false,
       },
       content: {
-        type: Sequelize.TEXT("long"),
+        type: Sequelize.TEXT('long'),
         allowNull: false,
       },
       status: {
@@ -25,47 +25,37 @@ module.exports = {
           StatusEnum.REJECTED,
           StatusEnum.ACCEPTED
         ),
-        defaultValue: StatusEnum.PENDING,
+        defaultValue: StatusEnum.PENDING  
       },
       idAuthor: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        references: {
-          model: "users",
-          key: "idUser",
+        references:{
+          model: 'users',
+          key: 'idUser',
         },
-        onUpdate: "CASCADE",
-        onDelete: "CASCADE",
-      },
-      idConference: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        references: {
-          model: "conferences",
-          key: "idConference",
-        },
-        onUpdate: "CASCADE",
-        onDelete: "CASCADE",
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
       },
       idReviewer1: {
         type: Sequelize.INTEGER,
         allowNull: true,
         references: {
-          model: "users", // Numele tabelei care conține `idUser`
-          key: "idUser",
+          model: 'users', // Numele tabelei care conține `idUser`
+          key: 'idUser',
         },
-        onUpdate: "CASCADE",
-        onDelete: "SET NULL",
+        onUpdate: 'CASCADE',
+        onDelete: 'SET NULL',
       },
       idReviewer2: {
         type: Sequelize.INTEGER,
         allowNull: true,
         references: {
-          model: "users", // Numele tabelei care conține `idUser`
-          key: "idUser",
+          model: 'users', // Numele tabelei care conține `idUser`
+          key: 'idUser',
         },
-        onUpdate: "CASCADE",
-        onDelete: "SET NULL",
+        onUpdate: 'CASCADE',
+        onDelete: 'SET NULL',
       },
       idConference:{
         type: Sequelize.INTEGER,
@@ -77,6 +67,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("articles");
-  },
+    await queryInterface.dropTable('articles');
+  }
 };
