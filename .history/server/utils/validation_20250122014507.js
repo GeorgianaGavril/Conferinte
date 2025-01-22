@@ -26,6 +26,8 @@ const returnReviewers = async () => {
   
       // Extract the idUser values
       const reviewerIds = reviewers.map(user => user.idUser);
+
+      console.log(reviewers);
   
       return reviewerIds;
     } catch (error) {

@@ -41,14 +41,7 @@ const createArticle = async (req, res) => {
     }
 
 
-    const newArticle = await Article.create({ 
-                    title: title, 
-                    content: content, 
-                    idAuthor: idAuthor, 
-                    idReviewer1: user1, 
-                    idReviewer2: user2,
-                    idConference: idConference
-                    });
+    const newArticle = await Article.create({ title, content, idAuthor, idReviewer1: user1, idReviewer1user2 });
     return res
       .status(201)
       .json({ message: "Articol creat cu succes", newArticle });

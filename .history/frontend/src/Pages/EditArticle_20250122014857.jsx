@@ -84,7 +84,7 @@ function EditArticle() {
         </div>
         <p><strong>Status:</strong> {article.status}</p>
         <button type="submit">Salvează Modificările</button>
-      </div>
+        ,/div</div>
       </form>
       <ToastContainer />
     </div>

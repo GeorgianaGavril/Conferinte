@@ -50,6 +50,7 @@ function EditArticle() {
       toast.success('Articolul a fost actualizat cu succes!');
       navigate('/'); // Navighează înapoi la dashboard
     } catch (error) {
+      toast.error(err)
       toast.error('Eroare la actualizarea articolului!');
     }
   };

@@ -4,7 +4,7 @@ const StatusEnum = require("../utils/statusEnum");
 const { Model, Sequelize } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Article extends Model {
-    /*
+    /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
@@ -80,23 +80,13 @@ module.exports = (sequelize, DataTypes) => {
       },
       idReviewer1: {
         type: DataTypes.INTEGER,
-        allowNull: true,
-        references: {
-          model: "User",
-          key: "idUser",
-        },
-        onUpdate: "CASCADE",
-        onDelete: "SET NULL",
+        allowNull: false,
+        primaryKey: true
       },
       idReviewer2: {
         type: DataTypes.INTEGER,
-        allowNull: true,
-        references: {
-          model: "User",
-          key: "idUser",
-        },
-        onUpdate: "CASCADE",
-        onDelete: "SET NULL",
+        allowNull: false,
+        primaryKey: true
       },
     },
     {

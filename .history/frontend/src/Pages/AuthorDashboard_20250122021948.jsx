@@ -23,7 +23,8 @@ function AuthorDashboard() {
 
   const fetchArticles = async () => {
     try {
-      const response = await axios.get("http://localhost:3001/article/");
+      console.log("alalalalla")
+      const response = await axios.get("http://localhost:3001/articles/");
       setArticles(response.data);
     } catch (e) {
       toast.error("Eroare la încărcarea articolelor!");

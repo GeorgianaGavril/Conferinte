@@ -41,8 +41,7 @@ const createArticle = async (req, res) => {
     }
 
 
-    const newArticle = await Article.create({ 
-                    title: title, 
+    const newArticle = await Article.create({ title: title, 
                     content: content, 
                     idAuthor: idAuthor, 
                     idReviewer1: user1, 

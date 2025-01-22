@@ -41,13 +41,12 @@ const createArticle = async (req, res) => {
     }
 
 
-    const newArticle = await Article.create({ 
-                    title: title, 
+    const newArticle = await Article.create({ title: title, 
                     content: content, 
                     idAuthor: idAuthor, 
                     idReviewer1: user1, 
                     idReviewer2: user2,
-                    idConference: idConference
+                    
                     });
     return res
       .status(201)

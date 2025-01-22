@@ -26,11 +26,10 @@ const createArticle = async (req, res) => {
 
     console.log("autor unic");
 
-    /*
     const articleExists = await checkUniqueTitle(title);
     if (articleExists !== null) {
         return res.status(400).json({ message: "Exista deja un articol cu acest titlu" });
-    }*/
+    }
 
     console.log("titlu unic");
 

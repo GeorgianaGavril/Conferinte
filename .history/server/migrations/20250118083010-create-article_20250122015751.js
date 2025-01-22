@@ -39,23 +39,23 @@ module.exports = {
       },
       idReviewer1: {
         type: Sequelize.INTEGER,
-        allowNull: true,
+        allowNull: false,
         references: {
-          model: 'users', // Numele tabelei care conține `idUser`
-          key: 'idUser',
+          model: "users",
+          key: "idUser",
         },
-        onUpdate: 'CASCADE',
-        onDelete: 'SET NULL',
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
       },
       idReviewer2: {
         type: Sequelize.INTEGER,
-        allowNull: true,
+        allowNull: false,
         references: {
-          model: 'users', // Numele tabelei care conține `idUser`
-          key: 'idUser',
+          model: "users",
+          key: "idUser",
         },
-        onUpdate: 'CASCADE',
-        onDelete: 'SET NULL',
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
       },
     });
   },

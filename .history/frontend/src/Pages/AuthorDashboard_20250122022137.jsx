@@ -23,6 +23,7 @@ function AuthorDashboard() {
 
   const fetchArticles = async () => {
     try {
+      console.log("alalalalla");
       const response = await axios.get("http://localhost:3001/article/");
       setArticles(response.data);
     } catch (e) {

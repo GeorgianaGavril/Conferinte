@@ -80,23 +80,11 @@ module.exports = (sequelize, DataTypes) => {
       },
       idReviewer1: {
         type: DataTypes.INTEGER,
-        allowNull: true,
-        references: {
-          model: "User",
-          key: "idUser",
-        },
-        onUpdate: "CASCADE",
-        onDelete: "SET NULL",
+        allowNull: false,
       },
       idReviewer2: {
         type: DataTypes.INTEGER,
-        allowNull: true,
-        references: {
-          model: "User",
-          key: "idUser",
-        },
-        onUpdate: "CASCADE",
-        onDelete: "SET NULL",
+        allowNull: false,
       },
     },
     {
