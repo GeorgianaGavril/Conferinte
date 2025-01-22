@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "../css/pages/create-article.css";
 import Sidebar from "../Components/Sidebar";
-import ConferenceCard from "../Components/ConferenceCard";
-import ArticleCardAuthor from "../Components/ArticleCardAuthor";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import { useParams, useNavigate } from 'react-router-dom';
@@ -19,7 +17,20 @@ function AuthorDashboard() {
   const fetchConferences = async () => {
     try {
       const response = await axios.get("http://localhost:3001/conference/");
-      setConferences(response.data);
+      const conferenceData = response.data;
+
+      // Verifică dacă utilizatorul are deja articole asociate fiecărei conferințe
+      const enrichedConferences = conferenceData.map((conference) => {
+        const isEnrolled = articles.some(
+          (article) => article.idConference === conference.idConference
+        );
+        return {
+          ...conference,
+          isEnrolled, // Adaugă câmpul pentru verificare
+        };
+      });
+
+      setConferences(enrichedConferences);
     } catch (e) {
       toast.error("Eroare la încărcarea conferințelor!");
     }
@@ -39,8 +50,7 @@ function AuthorDashboard() {
   useEffect(() => {
     document.body.classList.add("author-dashboard");
 
-    fetchConferences();
-    fetchArticles();
+    fetchArticles().then(() => fetchConferences());
 
     return () => {
       document.body.classList.remove("author-dashboard");
@@ -67,33 +77,55 @@ function AuthorDashboard() {
 
         {/* Secțiunea pentru conferințe */}
         <section>
+          <form onSubmit={handleSubmit} className="create-article-form">
           <h2>Conferințe disponibile</h2>
-          <div className="conference-list">
+          <div className="card-container">
             {conferences.length > 0 ? (
               conferences.map((conference) => (
-                <ConferenceCard
-                  key={conference.idConference}
-                  conference={conference}
-                  navigate={navigate}
-                />
+                <div key={conference.idConference} className="card">
+                  <h3>{conference.name}</h3>
+                  <p>{conference.description}</p>
+                  {conference.isEnrolled ? ( // Verifică dacă utilizatorul s-a înscris
+                    <button disabled>Deja înscris</button>
+                  ) : (
+                    <button onClick={() => handleSubmit(conference.idConference)}>
+                      Înscrie-te
+                    </button>
+                  )}
+                </div>
               ))
             ) : (
               <p>Nu există conferințe disponibile momentan.</p>
             )}
           </div>
+          </form>
         </section>
 
         {/* Secțiunea pentru articole */}
         <section>
           <h2>Articole propuse</h2>
-          <div className="article-list">
+          <div className="card-container">
             {articles.length > 0 ? (
               articles.map((article) => (
-                <ArticleCardAuthor
-                  key={article.idArticle}
-                  article={article}
-                  navigate={navigate}
-                />
+                <div key={article.idArticle} className="card">
+                  <h3>{article.title}</h3>
+                  <p>Status: {article.status}</p>
+                  {article.status === "în așteptare" ? (
+                    <button
+                      onClick={() => navigate(`/edit/article/${article.idArticle}`)}
+                    >
+                      Editează
+                    </button>
+                  ) : article.status === "acceptat" ? (
+                    <button
+                      onClick={() => navigate(`/view/article/${article.idArticle}`)}
+                    >
+                      Vizualizează
+                    </button>
+                  ) : (
+                    <button disabled>Status: {article.status}</button>
+                  )}
+                </div>
               ))
             ) : (
               <p>Nu ai propus articole încă.</p>

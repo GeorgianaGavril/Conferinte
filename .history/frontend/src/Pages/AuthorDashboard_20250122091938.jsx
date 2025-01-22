@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "../css/pages/create-article.css";
 import Sidebar from "../Components/Sidebar";
 import ConferenceCard from "../Components/ConferenceCard";
-import ArticleCardAuthor from "../Components/ArticleCardAuthor";
+impo
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import { useParams, useNavigate } from 'react-router-dom';
@@ -89,7 +89,7 @@ function AuthorDashboard() {
           <div className="article-list">
             {articles.length > 0 ? (
               articles.map((article) => (
-                <ArticleCardAuthor
+                <ArticleCard
                   key={article.idArticle}
                   article={article}
                   navigate={navigate}

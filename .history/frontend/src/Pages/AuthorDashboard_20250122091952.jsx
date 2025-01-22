@@ -89,7 +89,7 @@ function AuthorDashboard() {
           <div className="article-list">
             {articles.length > 0 ? (
               articles.map((article) => (
-                <ArticleCardAuthor
+                <ArticleCardAuthr
                   key={article.idArticle}
                   article={article}
                   navigate={navigate}
